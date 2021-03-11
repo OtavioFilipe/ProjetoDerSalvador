@@ -1,8 +1,41 @@
 const Books = require("../app/models/book");
+const { search } = require("../routes");
 module.exports = {
-    async createBooks(request, response) {
+
+    async index(request, response) {
+        try {
+            const books = await Books.find();
+            return response.send(books);
+        } catch (error) {
+            return response.send("Books not found")
+        }
+    },
+
+    async searchByAuthor(request, response) {
+        try {
+            const data =  request.body
+            const books = await Books.findOne({author: data.author});
+            return response.send(books);
+        } catch (error) {
+            return response.send("Books not found")
+        }
+    },
+
+    async searchByTitle(request, response) {
         try {
             const data = request.body
+            const resultOfDatabase = await Books.findOne({title: data.title})
+            return response.send(resultOfDatabase);
+        } catch (error) {
+            return response.send("Title not found")
+        }
+    },
+
+    async createBooks(request, response) {
+
+
+        try {
+            const data = request.body//o que veio do front|json enviado do front para o back end| recebe como parametro o corpo do objeto|
             const books = await Books.create({
                 content: data.content,
                 title: data.title,
@@ -12,7 +45,9 @@ module.exports = {
             return response.send(books);
 
         } catch (error) {
-            return response.send("Error!")
+            return response.send("Database not found")
         }
+
+
     }
 }
