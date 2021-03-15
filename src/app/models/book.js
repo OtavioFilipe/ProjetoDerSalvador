@@ -17,6 +17,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
 
+    },
+    status: {
+        type: String,
+        required: true
     }
 });
 
